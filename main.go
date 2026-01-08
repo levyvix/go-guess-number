@@ -6,51 +6,47 @@ import (
 )
 
 func main() {
-	number := rand.Intn(101)
-	nTries := 10
-	palpites := []int{}
+	numeroSorteado := rand.Intn(101)
+	nTentativas := 10
+	palpitesFeitos := []int{}
 
-	fmt.Printf("Guess the number, you %d tries.\n", nTries)
-	tryCount := 0
-	for tryCount < nTries {
+	fmt.Printf("Guess the number, you %d tries.\n", nTentativas)
+	contTentativa := 0
+	for contTentativa < nTentativas {
 		var guess int
-		fmt.Printf("Enter your guess (0, 100) - [%d tries remaining]: ", nTries-tryCount)
+		fmt.Printf("Enter your guess (0, 100) - [%d tries remaining]: ", nTentativas-contTentativa)
 		_, err := fmt.Scanf("%d", &guess)
 		if err != nil {
 			fmt.Println("Invalid input. Please enter an integer.")
 			continue
 		}
-		alreadyGuessed := false
-		for i := range palpites {
-			if guess == palpites[i] {
+		for _, palpite := range palpitesFeitos {
+			if guess == palpite {
 				fmt.Println("You already guessed that number. Try again.")
-				alreadyGuessed = true
+				continue
 			}
 		}
-		if alreadyGuessed {
-			continue
-		}
-		palpites = append(palpites, guess)
+
+		palpitesFeitos = append(palpitesFeitos, guess)
 
 		if guess < 0 || guess > 100 {
 			fmt.Println("Please guess a number between 0 and 100.")
 			continue
 		}
 
-		tryCount++
+		contTentativa++
 
-		if guess < number {
-			fmt.Println("Too low!")
-		} else if guess > number {
-			fmt.Println("Too high!")
+		if guess < numeroSorteado {
+			fmt.Println("Too low! Guess higher.")
+		} else if guess > numeroSorteado {
+			fmt.Println("Too high! Guess lower.")
 		} else {
-			fmt.Println("Congratulations! You've guessed the number! The number was ", number)
+			fmt.Println("Congratulations! You've guessed the number! The number was ", numeroSorteado)
 			return
 		}
 	}
-	if tryCount >= nTries {
-		fmt.Println("Sorry, you've used all your tries. The number was", number)
+	if contTentativa >= nTentativas {
+		fmt.Println("Sorry, you've used all your tries. The number was: ", numeroSorteado)
 		return
 	}
-
 }
